@@ -3,6 +3,7 @@ const HtmlWebpackPugPlugin = require('html-webpack-pug-plugin');
 
 module.exports = {
   entry: ['./public/js/index.js'],
+  devtool: 'source-map',
   output: {
     path: path.resolve(__dirname, 'public'),
     filename: 'js/bundle.js',

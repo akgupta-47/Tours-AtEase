@@ -3,3 +3,4 @@ node_modules/
 .prettierrc
 .eslintrc
 dev-data/
+webpack.config.js

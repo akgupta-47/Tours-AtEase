@@ -8,10 +8,6 @@ import { login } from './login';
 const mapBox = document.getElementById('map');
 const loginForm = document.querySelector('.form');
 
-// VALUES
-const email = document.getElementById('email').value;
-const password = document.getElementById('password').value;
-
 // DELEGATION
 if (mapBox) {
   const locations = JSON.parse(mapBox.dataset.locations);
@@ -21,5 +17,7 @@ if (mapBox) {
 if (loginForm)
   loginForm.addEventListener('submit', (el) => {
     el.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
     login(email, password);
   });
