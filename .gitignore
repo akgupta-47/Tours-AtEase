@@ -1,6 +1,6 @@
 node_modules/
 *.env
 .prettierrc
-.eslintrc
+.eslintrc.json
 dev-data/
 webpack.config.js

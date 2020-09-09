@@ -16,6 +16,8 @@ const createSignToken = (user, statusCode, res) => {
   const token = signToken(user._id);
 
   // Cookie implementaion
+  // as we can see we used a httpOnly way of storing key
+  // we cannot manipulate it from our side for logging out like deleting it
   const cookieOptions = {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
@@ -70,6 +72,17 @@ exports.login = catchAsync(async (req, res, next) => {
   createSignToken(user, 200, res);
 });
 
+// Since the httpOnly secure way of sending cookies the deletion is not possible
+// a clever way to overWrite the cookie with some dummy text so
+// it does not know which user to log in
+exports.logout = (req, res) => {
+  res.cookie('jwt', 'GuessWhatYouJustGotLoggedOut', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+  res.status(200).json({ status: 'success' });
+};
+
 exports.protect = catchAsync(async (req, res, next) => {
   // getting token and check if it is theres
   let token;
@@ -107,36 +120,42 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   // Grant acess to protected route
   req.user = currentUser;
+  res.locals.user = currentUser;
   next();
 });
 
-exports.isLoggedIn = catchAsync(async (req, res, next) => {
+// Due to problems in logout implementation we removed the catchAsync function
+exports.isLoggedIn = async (req, res, next) => {
   // getting token and check if it is theres
   if (req.cookies.jwt) {
-    // Token verification and if no one changed the token
-    const decoded = await promisify(jwt.verify)(
-      req.cookies.jwt,
-      process.env.JWT_SECRET
-    );
+    try {
+      // Token verification and if no one changed the token
+      const decoded = await promisify(jwt.verify)(
+        req.cookies.jwt,
+        process.env.JWT_SECRET
+      );
 
-    // check if user still exists
-    const currentUser = await User.findById(decoded.id);
-    if (!currentUser) {
+      // check if user still exists
+      const currentUser = await User.findById(decoded.id);
+      if (!currentUser) {
+        return next();
+      }
+
+      // check if user changed password after token was issued
+      if (currentUser.changedPasswordAfter(decoded.iat)) {
+        return next();
+      }
+
+      // There is a logged in user
+      //pug templates will have the access of res.locals
+      res.locals.user = currentUser;
+      return next();
+    } catch (err) {
       return next();
     }
-
-    // check if user changed password after token was issued
-    if (currentUser.changedPasswordAfter(decoded.iat)) {
-      return next();
-    }
-
-    // There is a logged in user
-    //pug templates will have the access of res.locals
-    res.locals.user = currentUser;
-    return next();
   }
   next();
-});
+};
 
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {

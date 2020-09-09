@@ -45,10 +45,7 @@ app.use(
     },
   })
 );
-/**      meta(http-equiv='Content-Security-Policy', content="script-src, 'self', https://.*cloudfare.com, 'unsafe-eval';")
-      meta(http-equiv='Content-Security-Policy', content="script-src-elem, https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js;")
-      meta(http-equiv='Content-Security-Policy', content="script-src-elem, http://127.0.0.1:3000/js/bundle.js;") */
-//scriptSrc: ["'self'", 'https://*.cloudflare.com'],
+
 // development logging
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
@@ -64,6 +61,7 @@ app.use('/api', limiter);
 
 // body parser reading data from  body into req.body
 app.use(express.json({ limit: '10kb' }));
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(cookieParser());
 
 // mongo data sanitization to prevent querry injection

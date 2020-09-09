@@ -6284,6 +6284,39 @@ module.exports = g;
 
 /***/ }),
 
+/***/ "./public/js/alerts.js":
+/*!*****************************!*\
+  !*** ./public/js/alerts.js ***!
+  \*****************************/
+/*! exports provided: hideAlert, showAlert */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hideAlert", function() { return hideAlert; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showAlert", function() { return showAlert; });
+/* harmony import */ var core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.array.concat */ "./node_modules/core-js/modules/es.array.concat.js");
+/* harmony import */ var core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_web_timers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/web.timers */ "./node_modules/core-js/modules/web.timers.js");
+/* harmony import */ var core_js_modules_web_timers__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_timers__WEBPACK_IMPORTED_MODULE_1__);
+
+
+
+/* eslint-disable */
+var hideAlert = function hideAlert() {
+  var element = document.getElementById('alert');
+  if (element) element.parentElement.removeChild(element);
+}; //type success or error
+
+var showAlert = function showAlert(type, msg) {
+  hideAlert();
+  var markup = "<div class=\"alert alert--".concat(type, "\">").concat(msg, "</div>");
+  document.querySelector('body').insertAdjacentHTML('afterbegin', markup);
+  window.setTimeout(hideAlert, 5000);
+};
+
+/***/ }),
+
 /***/ "./public/js/index.js":
 /*!****************************!*\
   !*** ./public/js/index.js ***!
@@ -6300,7 +6333,8 @@ __webpack_require__.r(__webpack_exports__);
  // DOM ELEMNTS
 
 var mapBox = document.getElementById('map');
-var loginForm = document.querySelector('.form'); // DELEGATION
+var loginForm = document.querySelector('.form--login');
+var logOutBtn = document.querySelector('.nav__el--logout'); // DELEGATION
 
 if (mapBox) {
   var locations = JSON.parse(mapBox.dataset.locations);
@@ -6313,6 +6347,7 @@ if (loginForm) loginForm.addEventListener('submit', function (el) {
   var password = document.getElementById('password').value;
   Object(_login__WEBPACK_IMPORTED_MODULE_1__["login"])(email, password);
 });
+if (logOutBtn) logOutBtn.addEventListener('click', _login__WEBPACK_IMPORTED_MODULE_1__["logout"]);
 
 /***/ }),
 
@@ -6320,12 +6355,13 @@ if (loginForm) loginForm.addEventListener('submit', function (el) {
 /*!****************************!*\
   !*** ./public/js/login.js ***!
   \****************************/
-/*! exports provided: login */
+/*! exports provided: login, logout */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "login", function() { return login; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "logout", function() { return logout; });
 /* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.object.to-string */ "./node_modules/core-js/modules/es.object.to-string.js");
 /* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.promise */ "./node_modules/core-js/modules/es.promise.js");
@@ -6336,6 +6372,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _alerts__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./alerts */ "./public/js/alerts.js");
 
 
 
@@ -6346,6 +6383,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 /*eslint-disable*/
+
 
 var login = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(email, password) {
@@ -6368,8 +6406,8 @@ var login = /*#__PURE__*/function () {
           case 3:
             res = _context.sent;
 
-            if (res.data.status == 'success') {
-              alert('Login successful');
+            if (res.data.status === 'success') {
+              Object(_alerts__WEBPACK_IMPORTED_MODULE_5__["showAlert"])('success', 'Login successful');
               window.setTimeout(function () {
                 location.assign('/');
               }, 1500);
@@ -6381,7 +6419,7 @@ var login = /*#__PURE__*/function () {
           case 7:
             _context.prev = 7;
             _context.t0 = _context["catch"](0);
-            console.log(_context.t0.response.data);
+            Object(_alerts__WEBPACK_IMPORTED_MODULE_5__["showAlert"])('error', _context.t0.response.data.message);
 
           case 10:
           case "end":
@@ -6393,6 +6431,46 @@ var login = /*#__PURE__*/function () {
 
   return function login(_x, _x2) {
     return _ref.apply(this, arguments);
+  };
+}();
+var logout = /*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+    var res;
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.prev = 0;
+            _context2.next = 3;
+            return axios__WEBPACK_IMPORTED_MODULE_4___default()({
+              method: 'GET',
+              url: '/api/v1/users/logout'
+            });
+
+          case 3:
+            res = _context2.sent;
+            // it is important to do reload(true) becayse then it renders the file from server
+            // rather than from cache which may result in serving the same file as of logged in user
+            if (res.data.status = 'success') location.reload(true);
+            _context2.next = 11;
+            break;
+
+          case 7:
+            _context2.prev = 7;
+            _context2.t0 = _context2["catch"](0);
+            console.log(_context2.t0.response);
+            Object(_alerts__WEBPACK_IMPORTED_MODULE_5__["showAlert"])('error', 'Error logging out! Try again.');
+
+          case 11:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, null, [[0, 7]]);
+  }));
+
+  return function logout() {
+    return _ref2.apply(this, arguments);
   };
 }();
 
