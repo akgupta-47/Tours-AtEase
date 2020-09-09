@@ -6304,7 +6304,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* eslint-disable */
 var hideAlert = function hideAlert() {
-  var element = document.getElementById('alert');
+  var element = document.querySelector('.alert');
   if (element) element.parentElement.removeChild(element);
 }; //type success or error
 
@@ -6326,28 +6326,92 @@ var showAlert = function showAlert(type, msg) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _mapbox__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./mapbox */ "./public/js/mapbox.js");
-/* harmony import */ var _login__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./login */ "./public/js/login.js");
+/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.object.to-string */ "./node_modules/core-js/modules/es.object.to-string.js");
+/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.promise */ "./node_modules/core-js/modules/es.promise.js");
+/* harmony import */ var core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! regenerator-runtime/runtime */ "./node_modules/regenerator-runtime/runtime.js");
+/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _mapbox__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./mapbox */ "./public/js/mapbox.js");
+/* harmony import */ var _login__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./login */ "./public/js/login.js");
+/* harmony import */ var _updateSettings__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./updateSettings */ "./public/js/updateSettings.js");
+
+
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 /* eslint-disable */
+
 
  // DOM ELEMNTS
 
 var mapBox = document.getElementById('map');
 var loginForm = document.querySelector('.form--login');
-var logOutBtn = document.querySelector('.nav__el--logout'); // DELEGATION
+var logOutBtn = document.querySelector('.nav__el--logout');
+var userDataForm = document.querySelector('.form-user-data');
+var userPasswordForm = document.querySelector('.form-user-password'); // DELEGATION
 
 if (mapBox) {
   var locations = JSON.parse(mapBox.dataset.locations);
-  Object(_mapbox__WEBPACK_IMPORTED_MODULE_0__["displayMap"])(locations);
+  Object(_mapbox__WEBPACK_IMPORTED_MODULE_3__["displayMap"])(locations);
 }
 
 if (loginForm) loginForm.addEventListener('submit', function (el) {
   el.preventDefault();
   var email = document.getElementById('email').value;
   var password = document.getElementById('password').value;
-  Object(_login__WEBPACK_IMPORTED_MODULE_1__["login"])(email, password);
+  Object(_login__WEBPACK_IMPORTED_MODULE_4__["login"])(email, password);
 });
-if (logOutBtn) logOutBtn.addEventListener('click', _login__WEBPACK_IMPORTED_MODULE_1__["logout"]);
+if (logOutBtn) logOutBtn.addEventListener('click', _login__WEBPACK_IMPORTED_MODULE_4__["logout"]);
+if (userDataForm) userDataForm.addEventListener('submit', function (el) {
+  el.preventDefault();
+  var name = document.getElementById('name').value;
+  var email = document.getElementById('email').value;
+  Object(_updateSettings__WEBPACK_IMPORTED_MODULE_5__["updateSettings"])({
+    name: name,
+    email: email
+  }, 'data');
+});
+if (userPasswordForm) userPasswordForm.addEventListener('submit', /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(el) {
+    var passwordCurrent, password, passwordConfirm;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            el.preventDefault();
+            document.querySelector('.btn--save-password').textContent = 'Updating...';
+            passwordCurrent = document.getElementById('password-current').value;
+            password = document.getElementById('password').value;
+            passwordConfirm = document.getElementById('password-confirm').value;
+            _context.next = 7;
+            return Object(_updateSettings__WEBPACK_IMPORTED_MODULE_5__["updateSettings"])({
+              passwordCurrent: passwordCurrent,
+              password: password,
+              passwordConfirm: passwordConfirm
+            }, 'password');
+
+          case 7:
+            document.querySelector('.btn--save-password').textContent = 'Save Password';
+            document.getElementById('password-current').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('password-confirm').value = '';
+
+          case 11:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function (_x) {
+    return _ref.apply(this, arguments);
+  };
+}());
 
 /***/ }),
 
@@ -6539,6 +6603,78 @@ var displayMap = function displayMap(locations) {
     }
   });
 };
+
+/***/ }),
+
+/***/ "./public/js/updateSettings.js":
+/*!*************************************!*\
+  !*** ./public/js/updateSettings.js ***!
+  \*************************************/
+/*! exports provided: updateSettings */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateSettings", function() { return updateSettings; });
+/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.object.to-string */ "./node_modules/core-js/modules/es.object.to-string.js");
+/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.promise */ "./node_modules/core-js/modules/es.promise.js");
+/* harmony import */ var core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! regenerator-runtime/runtime */ "./node_modules/regenerator-runtime/runtime.js");
+/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _alerts_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./alerts.js */ "./public/js/alerts.js");
+
+
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+ // type will be password or data
+
+var updateSettings = /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(data, type) {
+    var url, res;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.prev = 0;
+            url = type === 'password' ? '/api/v1/users/updateMyPassword' : '/api/v1/users/updateMe';
+            _context.next = 4;
+            return axios__WEBPACK_IMPORTED_MODULE_3___default()({
+              method: 'PATCH',
+              url: url,
+              data: data
+            });
+
+          case 4:
+            res = _context.sent;
+            if (res.data.status === 'success') Object(_alerts_js__WEBPACK_IMPORTED_MODULE_4__["showAlert"])('success', "".concat(type.toUpperCase(), " Changes Updated Successfully"));
+            _context.next = 11;
+            break;
+
+          case 8:
+            _context.prev = 8;
+            _context.t0 = _context["catch"](0);
+            Object(_alerts_js__WEBPACK_IMPORTED_MODULE_4__["showAlert"])('error', _context.t0.response.data.message);
+
+          case 11:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, null, [[0, 8]]);
+  }));
+
+  return function updateSettings(_x, _x2) {
+    return _ref.apply(this, arguments);
+  };
+}();
 
 /***/ }),
 
