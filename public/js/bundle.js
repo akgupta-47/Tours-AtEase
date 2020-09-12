@@ -6368,12 +6368,11 @@ if (loginForm) loginForm.addEventListener('submit', function (el) {
 if (logOutBtn) logOutBtn.addEventListener('click', _login__WEBPACK_IMPORTED_MODULE_4__["logout"]);
 if (userDataForm) userDataForm.addEventListener('submit', function (el) {
   el.preventDefault();
-  var name = document.getElementById('name').value;
-  var email = document.getElementById('email').value;
-  Object(_updateSettings__WEBPACK_IMPORTED_MODULE_5__["updateSettings"])({
-    name: name,
-    email: email
-  }, 'data');
+  var form = new FormData();
+  form.append('name', document.getElementById('name').value);
+  form.append('email', document.getElementById('email').value);
+  form.append('photo', document.getElementById('photo').files[0]);
+  Object(_updateSettings__WEBPACK_IMPORTED_MODULE_5__["updateSettings"])(form, 'data');
 });
 if (userPasswordForm) userPasswordForm.addEventListener('submit', /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(el) {
