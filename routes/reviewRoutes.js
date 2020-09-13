@@ -4,10 +4,6 @@ const reviewController = require('../controllers/reviewController');
 
 const router = express.Router({ mergeParams: true });
 
-//router.param('id', tourController.checkID);
-// this middleware is only available in the tours and not for user
-// this middleware will run after all the middleware are passed from app.js file
-
 router.use(authController.protect);
 
 router

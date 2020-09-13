@@ -11,6 +11,7 @@ module.exports = class Email {
     this.emailFrom = `Akshat Gupta ${process.env.EMAIL_FROM}`;
   }
 
+  // SendGrid used to send Emails to actual Users Only in production mode
   newTransport() {
     if (process.env.NODE_ENV === 'production') {
       //sendgrid
@@ -21,7 +22,6 @@ module.exports = class Email {
           pass: process.env.SENDGRID_PASSWORD,
         },
       });
-      return 1;
     }
 
     return nodemailer.createTransport({
@@ -31,7 +31,6 @@ module.exports = class Email {
         user: process.env.EMAIL_USERNAME,
         pass: process.env.EMAIL_PASSWORD,
       },
-      // Activate in gmail "less secure option"
     });
   }
 

@@ -8,9 +8,6 @@ export const displayMap = (locations) => {
     container: 'map',
     style: 'mapbox://styles/akgupta-47/ckehen5sc10s91ajyclffdz75',
     scrollZoom: false,
-    //   center: [-118.113491, 34.111745],
-    //   zoom: 10,
-    //   interactive: false,
   });
 
   const bounds = new mapboxgl.LngLatBounds();

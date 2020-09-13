@@ -3,7 +3,6 @@ class APIFeatures {
     this.query = query;
     this.queryString = queryString;
   }
-  // we are returning this object bcoz we are chaining these methods in funtion Below
 
   filter() {
     // 1a) Filtering
@@ -50,11 +49,6 @@ class APIFeatures {
 
     this.query = this.query.skip(skip).limit(limit);
 
-    // if (req.query.page) {
-    //   const numTours = await Tour.countDocuments();
-    //   if (skip >= numTours)
-    //     throw new Error('all tours are already dislplayed in earlier pages');
-    // }
     return this;
   }
 }

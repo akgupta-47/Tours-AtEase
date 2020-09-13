@@ -4,6 +4,7 @@ const Booking = require('../models/bookingModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
+// Get the Main Page of website
 exports.getOverview = catchAsync(async (req, res, next) => {
   //get the tour data from collection
   const tours = await Tour.find();
@@ -16,6 +17,7 @@ exports.getOverview = catchAsync(async (req, res, next) => {
   });
 });
 
+// Complete Description of every Tour
 exports.getTour = catchAsync(async (req, res, next) => {
   // get the data for particular tour (including reviews and guides)
   const tour = await Tour.findOne({ slug: req.params.slug }).populate({
@@ -56,6 +58,7 @@ exports.getAccount = (req, res) => {
   });
 };
 
+// View Tours only bought by You
 exports.getMyTours = catchAsync(async (req, res, next) => {
   // get the users Bookings
   const bookings = await Booking.find({ user: req.user.id });
@@ -70,6 +73,7 @@ exports.getMyTours = catchAsync(async (req, res, next) => {
   });
 });
 
+// Update the user details
 exports.updateUserData = catchAsync(async (req, res, next) => {
   const updatedUser = await User.findByIdAndUpdate(
     req.user.id,

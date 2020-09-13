@@ -31,8 +31,6 @@ export const logout = async () => {
       url: '/api/v1/users/logout',
     });
 
-    // it is important to do reload(true) becayse then it renders the file from server
-    // rather than from cache which may result in serving the same file as of logged in user
     if ((res.data.status = 'success')) location.reload(true);
   } catch (err) {
     console.log(err.response);

@@ -7,7 +7,6 @@ const reviewSchema = new mongoose.Schema(
       type: String,
       trim: true,
       required: [true, 'Review cannot be empty!!'],
-      /*maxlength: [100, 'The maximum length of review is 100 characters'],*/
       minlength: [10, 'The minimum length of name is 10 characters'],
     },
     rating: {
@@ -42,13 +41,6 @@ reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
 
 //Querry Middleware
 reviewSchema.pre(/^find/, function (next) {
-  //   this.populate({
-  //     path: 'user',
-  //     select: 'name',
-  //   }).populate({
-  //     path: 'tour',
-  //     select: 'name photo',
-  //   });
   this.populate({
     path: 'user',
     select: 'name photo',
@@ -86,15 +78,9 @@ reviewSchema.statics.calcAverageRatings = async function (tourId) {
 };
 
 reviewSchema.post('save', function () {
-  // this points to current review state
-  // we cannot use Review.calcAverageRatings because it is not defined yet
-  //this.constructor also means the current models
   this.constructor.calcAverageRatings(this.tour);
-  // post middlewares dont have access to nest coz they dont need it
 });
 
-// findByIdAndUpdate
-// findByIdAndDelete
 reviewSchema.pre(/^findOneAnd/, async function (next) {
   this.r = await this.findOne();
   //console.log(this.r);
@@ -104,11 +90,6 @@ reviewSchema.pre(/^findOneAnd/, async function (next) {
 reviewSchema.post(/^findOneAnd/, async function () {
   await this.r.constructor.calcAverageRatings(this.r.tour);
 });
-
-// reviewSchema.post(/save|^findOne/, async (doc, next) => {
-//   await doc.constructor.calcAverageRating(doc.tour);
-//   next();
-// });
 
 const Review = mongoose.model('Review', reviewSchema);
 

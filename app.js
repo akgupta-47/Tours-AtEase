@@ -9,6 +9,7 @@ const hpp = require('hpp');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
+// Requiring Developer created files
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 const tourRouter = require('./routes/tourRoutes');
@@ -30,8 +31,7 @@ app.use(
     credentials: true,
   })
 );
-// helmet is a collection of middlewares
-//helmet sets secure http headers
+
 app.use(helmet());
 app.use(
   helmet.contentSecurityPolicy({
@@ -93,8 +93,6 @@ app.use((req, res, next) => {
   next();
 });
 
-//Json.parse converts json data into javascript object array
-
 // 3. Routes
 
 //now these two are middlewares for routers, Mounting
@@ -104,27 +102,9 @@ app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
 app.use('/api/v1/bookings', bookingRouter);
 
-/**for all the unhandeled routes we create a handler middleware for
- * so just bcoz u have reached here passing all the other middleware above so any querry here
- * must be useless one so we need to send a json response
- */
-
 app.all('*', (req, res, next) => {
-  // res.status(404).json({
-  //   status: 'fail',
-  //   message: `Can't find the ${req.originalUrl} on the server`,
-  // });
-  ////////////////////////////////////////////////
-  // const err = new Error(`Can't find the ${req.originalUrl} on the server`);
-  // err.status = 'fail';
-  // err.statusCode = 404;
-  // next(err);
-  ////////////////////////////////////////////
   next(new AppError(`Can't find the ${req.originalUrl} on the server`, 404));
 });
-
-// next(err) function only recognizes error as object no matter what the middle ware is
-// it will skip all middlewares and send the err to global error handling middleware
 
 app.use(globalErrorHandler);
 

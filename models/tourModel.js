@@ -12,10 +12,6 @@ const tourSchema = new mongoose.Schema(
       trim: true,
       maxlength: [40, 'The maximum length of name is 40 characters'],
       minlength: [10, 'The minimum length of name is 10 characters'],
-      // validate: [
-      //   validator.isAlpha,
-      //   'the name of the tour must be alphanumeric',
-      // ],
     },
     duration: {
       type: Number,
@@ -53,7 +49,6 @@ const tourSchema = new mongoose.Schema(
     priceDiscount: {
       type: Number,
       validate: {
-        // the validator function will only work on new docs not on updating docs
         validator: function (value) {
           return value < this.price;
         },
@@ -103,7 +98,6 @@ const tourSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    /*guides: Array, //use this in case of embedding document*/
     guides: [
       {
         type: mongoose.Schema.ObjectId,
@@ -120,11 +114,8 @@ const tourSchema = new mongoose.Schema(
 tourSchema.index({ price: 1, ratingsAverage: -1 });
 tourSchema.index({ slug: 1 });
 tourSchema.index({ startLocation: '2dsphere' });
-// const self = this;
-// tourSchema.virtual('durationWeeks').get(() => {
-//   return self.duration / 7;
-// });
-// Document Middle wares are used on save() and create() before and after creation of document
+
+// Document Middle wares
 tourSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7;
 });
@@ -139,22 +130,6 @@ tourSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
   next();
 });
-
-// tourSchema.pre('save', async function (next) {
-//   const guidePromises = this.guides.map(async (id) => await User.findById(id));
-//   this.guides = await Promise.all(guidePromises);
-//   next();
-// });
-
-// tourSchema.pre('save', function (next) {
-//   console.log('will post this document');
-//   next();
-// });
-
-// tourSchema.post('save', function (doc, next) {
-//   console.log(doc);
-//   next();
-// });
 
 // Querry Middleware
 tourSchema.pre(/^find/, function (next) {
@@ -171,20 +146,6 @@ tourSchema.pre(/^find/, function (next) {
   next();
 });
 
-// tourSchema.post(/^find/, function (docs, next) {
-//   console.log(` the querry took ${Date.now() - this.start} milliseconds`);
-//   console.log(docs);
-//   next();
-// });
-
-// Aggregate Middlewares
-// tourSchema.pre('aggregate', function (next) {
-//   this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
-//   //console.log(this.pipeline());
-//   next();
-// });
-
-// required: [true of false, error string]
 const Tour = mongoose.model('Tour', tourSchema);
 
 module.exports = Tour;

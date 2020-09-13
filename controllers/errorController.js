@@ -1,7 +1,6 @@
 /* eslint-disable node/no-unsupported-features/es-syntax */
 const AppError = require('../utils/appError');
 
-// in the error object there is a path property that tells which part has the wrong value and value tells what is the value
 const handleCastErrorDB = (err) => {
   const message = `Invalid ${err.path} : ${err.value}`;
   //console.log(err.constructor.name); //this will give CastError
@@ -96,7 +95,6 @@ module.exports = (err, req, res, next) => {
   if (process.env.NODE_ENV === 'development') {
     sendErrorDev(err, req, res);
   } else if (process.env.NODE_ENV === 'production') {
-    //let error = Object.assign(err); //this will also work but it could bring problems if we use the err object for more in future
     let error = { ...err };
     error.name = err.name;
     error.code = err.code;

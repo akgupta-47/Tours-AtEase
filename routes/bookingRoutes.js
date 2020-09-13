@@ -4,10 +4,12 @@ const bookingController = require('../controllers/bookingController');
 
 const router = express.Router();
 
+// Protect all Routes ahead
 router.use(authController.protect);
 
 router.get('/checkout-session/:tourId', bookingController.getCheckoutSession);
 
+// The Manipulation of Bookings is limited to admin and lead Guide only
 router.use(authController.restrictTo('admin', 'lead-guide'));
 
 router

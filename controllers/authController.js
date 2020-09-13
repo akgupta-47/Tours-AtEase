@@ -15,9 +15,6 @@ const signToken = (id) => {
 const createSignToken = (user, statusCode, res) => {
   const token = signToken(user._id);
 
-  // Cookie implementaion
-  // as we can see we used a httpOnly way of storing key
-  // we cannot manipulate it from our side for logging out like deleting it
   const cookieOptions = {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
@@ -76,9 +73,6 @@ exports.login = catchAsync(async (req, res, next) => {
   createSignToken(user, 200, res);
 });
 
-// Since the httpOnly secure way of sending cookies the deletion is not possible
-// a clever way to overWrite the cookie with some dummy text so
-// it does not know which user to log in
 exports.logout = (req, res) => {
   res.cookie('jwt', 'GuessWhatYouJustGotLoggedOut', {
     expires: new Date(Date.now() + 10 * 1000),
@@ -229,7 +223,6 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   user.passwordConfirm = req.body.passwordConfirm;
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
-  // the above statements only update but dont save so we have to do it manually
   await user.save();
 
   // log the user in and send jwt token
@@ -249,7 +242,6 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   user.password = req.body.password;
   user.passwordConfirm = req.body.passwordConfirm;
   await user.save();
-  //User.findByIdAndUpdate() will not word as the validators will not work as mongoose doesnt keep current object in memory and pre-save middleware will not work as
 
   // 4) Log user in, send JWT
   createSignToken(user, 200, res);
