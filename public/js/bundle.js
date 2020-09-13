@@ -6335,6 +6335,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mapbox__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./mapbox */ "./public/js/mapbox.js");
 /* harmony import */ var _login__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./login */ "./public/js/login.js");
 /* harmony import */ var _updateSettings__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./updateSettings */ "./public/js/updateSettings.js");
+/* harmony import */ var _stripe__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./stripe */ "./public/js/stripe.js");
 
 
 
@@ -6346,13 +6347,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 /* eslint-disable */
 
 
+
  // DOM ELEMNTS
 
 var mapBox = document.getElementById('map');
 var loginForm = document.querySelector('.form--login');
 var logOutBtn = document.querySelector('.nav__el--logout');
 var userDataForm = document.querySelector('.form-user-data');
-var userPasswordForm = document.querySelector('.form-user-password'); // DELEGATION
+var userPasswordForm = document.querySelector('.form-user-password');
+var bookBtn = document.getElementById('book-tour'); // DELEGATION
 
 if (mapBox) {
   var locations = JSON.parse(mapBox.dataset.locations);
@@ -6411,6 +6414,14 @@ if (userPasswordForm) userPasswordForm.addEventListener('submit', /*#__PURE__*/f
     return _ref.apply(this, arguments);
   };
 }());
+
+if (bookBtn) {
+  bookBtn.addEventListener('click', function (event) {
+    event.target.textContent = 'Processing...';
+    var tourId = event.target.dataset.tourId;
+    Object(_stripe__WEBPACK_IMPORTED_MODULE_6__["bookTour"])(tourId);
+  });
+}
 
 /***/ }),
 
@@ -6602,6 +6613,82 @@ var displayMap = function displayMap(locations) {
     }
   });
 };
+
+/***/ }),
+
+/***/ "./public/js/stripe.js":
+/*!*****************************!*\
+  !*** ./public/js/stripe.js ***!
+  \*****************************/
+/*! exports provided: bookTour */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "bookTour", function() { return bookTour; });
+/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.object.to-string */ "./node_modules/core-js/modules/es.object.to-string.js");
+/* harmony import */ var core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.promise */ "./node_modules/core-js/modules/es.promise.js");
+/* harmony import */ var core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_promise__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! regenerator-runtime/runtime */ "./node_modules/regenerator-runtime/runtime.js");
+/* harmony import */ var regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(regenerator_runtime_runtime__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _alerts__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./alerts */ "./public/js/alerts.js");
+
+
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+/* eslint-disable */
+
+
+var stripe = Stripe('pk_test_51HQfpjCplCtklBrbegW9yT2VOa857dpoqK994oIppOYT7HrMTrJINDkKqWgShEHARnkF09VdwCJJCQD03z3Ph2cP00YuCr2qjI');
+var bookTour = /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(tourId) {
+    var session;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.prev = 0;
+            _context.next = 3;
+            return axios__WEBPACK_IMPORTED_MODULE_3___default()("/api/v1/bookings/checkout-session/".concat(tourId));
+
+          case 3:
+            session = _context.sent;
+            console.log(session); //create checkout from credit card
+
+            _context.next = 7;
+            return stripe.redirectToCheckout({
+              sessionId: session.data.session.id
+            });
+
+          case 7:
+            _context.next = 13;
+            break;
+
+          case 9:
+            _context.prev = 9;
+            _context.t0 = _context["catch"](0);
+            console.log(_context.t0);
+            Object(_alerts__WEBPACK_IMPORTED_MODULE_4__["showAlert"])('error', _context.t0);
+
+          case 13:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, null, [[0, 9]]);
+  }));
+
+  return function bookTour(_x) {
+    return _ref.apply(this, arguments);
+  };
+}();
 
 /***/ }),
 
