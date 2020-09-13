@@ -1,5 +1,5 @@
 <h1 align="center">Welcome to Tours At Ease 👋</h1>
-<img src="/public/img/logo-green.png">
+<img src="/public/img/logo-green.png" style="align: center;">
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
   <a href="None" target="_blank">
@@ -44,6 +44,8 @@ npm start
 ## Show your support
 
 Give a ⭐️ if this project helped you!
+Feel free to contribute in my project, to add even more exciting functionalities.
+Akshat :)
 
 ---
 
