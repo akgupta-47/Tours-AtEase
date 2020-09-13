@@ -12,6 +12,22 @@
 
 > A advanced NodeJs based Project Comprising of Express Routing And Awesome MongoDb Database Service, Which provides its users with the most intusive and rememberable tourism experience at great prices.
 
+## Tech Stack Used
+
+<section>
+  <h3>NodeJs<h3>
+  <h3>ExpressJs<h3>
+  <h3>MongoDb<h3>
+  <img src="https://codemoto.io/wp-content/themes/cloudhost/library/images/node-express-mongo.png">
+  <h3>Pug Template engine<h3>
+  <h3>Cascading Style Sheets<h3>
+</section>
+
+**Cherry On Top With**
+Webpack Asset bundler
+Babel
+Eslint
+
 ## Install
 
 ```sh
