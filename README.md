@@ -14,19 +14,18 @@
 
 ## Tech Stack Used
 
-<section>
-  <h3>NodeJs<h3>
-  <h3>ExpressJs<h3>
-  <h3>MongoDb<h3>
-  <img src="https://codemoto.io/wp-content/themes/cloudhost/library/images/node-express-mongo.png">
-  <h3>Pug Template engine<h3>
-  <h3>Cascading Style Sheets<h3>
-</section>
+**NodeJs**\
+**ExpressJs**\
+**MongoDb**\
+<img src="https://codemoto.io/wp-content/themes/cloudhost/library/images/node-express-mongo.png">
+
+**Pug Template engine**\
+**Cascading Style Sheets**\
 
 **Cherry On Top With**
-Webpack Asset bundler
-Babel
-Eslint
+Webpack Asset bundler\
+Babel\
+Eslint\
 
 ## Install
 
@@ -59,9 +58,9 @@ npm start
 
 ## Show your support
 
-Give a ⭐️ if this project helped you!
+<p>Give a ⭐️ if this project helped you!<br>
 Feel free to contribute in my project, to add even more exciting functionalities.
-Akshat :)
+Akshat :)</p>
 
 ---
 
