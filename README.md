@@ -16,16 +16,16 @@
 
 **NodeJs**\
 **ExpressJs**\
-**MongoDb**\
+**MongoDb**
 <img src="https://codemoto.io/wp-content/themes/cloudhost/library/images/node-express-mongo.png">
 
 **Pug Template engine**\
-**Cascading Style Sheets**\
+**Cascading Style Sheets**
 
 **Cherry On Top With**
 Webpack Asset bundler\
 Babel\
-Eslint\
+Eslint
 
 ## Install
 
