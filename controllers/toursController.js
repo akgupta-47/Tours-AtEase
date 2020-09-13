@@ -194,8 +194,6 @@ exports.getDistances = catchAsync(async (req, res, next) => {
     );
   }
 
-  //in a geospatial aggregate pipeline the geonear is always the first property
-  //also geoNear require to have one property with geospatial index
   const distances = await Tour.aggregate([
     {
       $geoNear: {
