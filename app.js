@@ -8,6 +8,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
 
 // Requiring Developer created files
 const AppError = require('./utils/appError');
@@ -46,6 +47,8 @@ app.use(
     },
   })
 );
+
+app.use(compression());
 
 // development logging
 if (process.env.NODE_ENV === 'development') {
