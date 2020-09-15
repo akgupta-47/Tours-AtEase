@@ -37,7 +37,7 @@ app.use(helmet());
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
-      defaultSrc: ["'self'", 'http://127.0.0.1:3000/*'],
+      defaultSrc: ["'self'"],
       baseUri: ["'self'"],
       fontSrc: ["'self'", 'https:', 'data:'],
       scriptSrc: ["'self'", 'https://cdnjs.cloudflare.com', 'unsafe-eval'],
