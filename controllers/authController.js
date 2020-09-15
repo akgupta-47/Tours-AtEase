@@ -12,17 +12,16 @@ const signToken = (id) => {
   });
 };
 
-const createSignToken = (user, statusCode, res) => {
+const createSignToken = (user, statusCode,req, res) => {
   const token = signToken(user._id);
-
-  const cookieOptions = {
+  
+  res.cookie('jwt', token, {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
-  };
-  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
-  res.cookie('jwt', token, cookieOptions);
+    secure = req.secure || req.headers('x-forwarded-proto') === 'https'
+  });
 
   user.password = undefined;
 
@@ -46,14 +45,14 @@ exports.signUp = catchAsync(async (req, res, next) => {
     role: req.body.role,
     passwordCurrent: req.body.passwordCurrent,
     active: req.body.active,
-    image: req.body.image,
+    photo: req.body.image,
   });
 
   const url = `${req.protocol}://${req.get('host')}/me`;
   //console.log(url);
   await new Email(newUser, url).sendWelcome();
 
-  createSignToken(newUser, 201, res);
+  createSignToken(newUser, 201,req, res);
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -70,7 +69,7 @@ exports.login = catchAsync(async (req, res, next) => {
   }
 
   // if everything is ok send token to the client
-  createSignToken(user, 200, res);
+  createSignToken(user, 200,req, res);
 });
 
 exports.logout = (req, res) => {
@@ -226,7 +225,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   await user.save();
 
   // log the user in and send jwt token
-  createSignToken(user, 200, res);
+  createSignToken(user, 200,req, res);
 });
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
@@ -244,5 +243,5 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   await user.save();
 
   // 4) Log user in, send JWT
-  createSignToken(user, 200, res);
+  createSignToken(user, 200,req, res);
 });
