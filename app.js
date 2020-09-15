@@ -18,6 +18,7 @@ const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
 const viewRouter = require('./routes/viewRoutes');
+const bookingController = require('./controllers/bookingController');
 
 const app = express();
 
@@ -64,6 +65,13 @@ const limiter = rateLimit({
   message: 'Whoa!! too many requests, try again in 1 hour',
 });
 app.use('/api', limiter);
+
+// Keep this above express.json line bcoz strive doesnt accept that data json
+app.post(
+  '/webhooks-checkout',
+  express.raw({ type: 'application/json' }),
+  bookingController.webhookCheckoutSession
+);
 
 // body parser reading data from  body into req.body
 app.use(express.json({ limit: '10kb' }));
