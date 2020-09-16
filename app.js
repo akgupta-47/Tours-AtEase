@@ -8,6 +8,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const compression = require('compression');
 
 // Requiring Developer created files
@@ -69,7 +70,7 @@ app.use('/api', limiter);
 // Keep this above express.json line bcoz strive doesnt accept that data json
 app.post(
   '/webhooks-checkout',
-  express.raw({ type: 'application/json' }),
+  bodyParser.raw({ type: 'application/json' }),
   bookingController.webhookCheckoutSession
 );
 
