@@ -13,7 +13,7 @@ html
       script(src="https://js.stripe.com/v3/")
       title Natours | #{title}
 
-  body
+  body(data-alert=`${alert ? alert : ' '}`)
     // Header
     include _header
 
